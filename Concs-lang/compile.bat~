@@ -1,0 +1,5 @@
+@echo off
+cls
+gcc *.c -o test.exe
+.\test.exe
+echo on

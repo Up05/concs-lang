@@ -8,7 +8,7 @@ namespace parser {
 
     int count(char* code, char symbol){
         int i = 0;
-        for(; i < 5; i ++){
+        for(; i < (int) Keyword::length; i ++){
             if(code[i] != symbol)
                 return i;
         }
@@ -40,9 +40,15 @@ namespace parser {
                     break;
                 case Keyword::IF:
                 case Keyword::SET:
+                case Keyword::SET_FLAG:
                     PARSE_VALUE; i ++;
                     PARSE_VALUE;
                     break;
+                case Keyword::ARITHMETIC:
+                    PARSE_VALUE; i ++;
+                    PARSE_VALUE; i ++;
+                    PARSE_VALUE; i ++;
+                    PARSE_VALUE;
                 default:
                     ;
 
@@ -58,21 +64,17 @@ namespace parser {
 
         for(int i = 0; i < size; i ++){
             if(code[i] != ';' && code[i] != '\\') [[unlikely]] {
-                error(1, "Invalid utf-8 character found!", i);
+                _error(ErrorType::GenericParser, "Invalid utf-8 character found!", i);
             }
         }
 
         exitCode = tokenize(code, size);
-        cout << "exited: " << (int) exitCode.type << ' ' << exitCode.column << endl;
 
         for(auto num : tokenized)
             cout << num << " ";
         cout << endl;
 
-        cp::compile(tokenized);
-
         
-
     }
 
 }

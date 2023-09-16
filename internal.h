@@ -3,8 +3,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <utility>
 
-void error(int, const char*, int);
+#define FLAG_COUNT 16
+
+enum class ErrorType : uint8_t {
+    Nevermind,
+    GeneralError,
+    GenericParser,
+    GenericCompiler,
+    UnknownFlag
+};
+
+void _error(ErrorType t, const char* message, int col);
+
 
 enum class Keyword : uint16_t {
     LABEL,
@@ -13,7 +25,10 @@ enum class Keyword : uint16_t {
     GET,
     SET,
     PRINT,
-    ERROR
+    SET_FLAG,
+    ARITHMETIC,
+    error,
+    length // to determine amount of elements here!
 };
 
 enum class CompileErrorType : uint8_t {
@@ -22,7 +37,6 @@ enum class CompileErrorType : uint8_t {
     BAD_CHAR,
     UNEXPECTED_EOF,
 };
-
 class CompileError {
 public:
     CompileErrorType type;
@@ -34,9 +48,9 @@ public:
 };
 
 namespace io {
-    void read_code(std::string);
-    void write_c(std::string, std::string);
-    const char* read_all_data(std::string datafilename);
+    std::pair<char*, size_t> read_code(std::string);
+    void write(std::string, std::wstring&);
+    const std::wstring read_all_data(std::string);
 }
 
 namespace parser {
@@ -44,7 +58,12 @@ namespace parser {
 }
 
 namespace cp {
-    void compile(std::vector<uint16_t>& tokenized);
+    /**
+     * parser::parse() has to be run before hand!
+     * Otherwise parser::tokenized is not generated.
+    */
+    const wchar_t* get_label(int index);
+    std::wstring compile();
 }
 
 

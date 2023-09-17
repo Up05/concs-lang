@@ -31,21 +31,35 @@ operators:
 ;;;; - div (int)
 ```
 #### Label
-\<index of label>\
+\<label index>\
 Sets a C's label(`a:;`), you can use any amount of `;` for label names.   
 Under the hood, a series of letters [a-z][A-Z] are generated as label names.
 
 #### If
-;\<data index>\<data index>
+;\<data index>\<data index>\
 Translates to C's `if(a == b)`.  
 Compares 2 values, if they're equal, executes the next command.  
 
+#### Go To
+;;\<label index>\
+Place's a C's goto statement with the name of the label, same exact system.
+
+#### Set
+;;;;\<data index>\<value>\
+sets a data value...
+
+#### Print
+;;;;;\<data index>\
+Prints a data value at the index given. Will have Several flags in the future (e.g.: ASCII, normalized letters('\s'-0, A-1 ...))
+
+#### Set Flag
+;;;;;;;\<flag index>\<value>\
+Set's a flag. NYI
+
 #### Arithmetic
-;;;;;;;\<index to output to>\<data index>\<index of operators>\<data index>
+;;;;;;;\<index to output to>\<data index>\<index of operators>\<data index>\
 
-Translates to set, or ;;;;, but with unary operator and a second value in the value slot.
-
-TODO: The rest of these...
+Translates to set, or ;;;;, but with unary operator and two values in the value slot.
 
 ---
 ### Example:

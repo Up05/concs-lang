@@ -1,9 +1,10 @@
 # concs-lang
 
+## Compiling
+`concs-compiler.exe <in file> <out file>` *it generates basic C code*
+
 ## Documentation
-
-
-# Overlay
+### Overlay
 ---
 commands:
 ```
@@ -69,14 +70,11 @@ Translates to set, or ;;;;, but with unary operator and two values in the value 
 
 ## How to install & run
 
-I still have a hard coded input path.
-
 1. Download repo in any of the many ways you can.
-2. EITHER open `main.cpp`, change `"test\\test.coc"` to path to your file,
-   OR     create a file `test.coc` at `.\test\`. *You'll probably have it already, actually*
-3. Cut `.\Concs-lang` to `%LocalAppData%\Ult1\`.
-4. Build and/or run the program *I probably have an `exe`, or 3, in the repo*.
-5. Enjoy and/or build the `.\test\test.c`.
+2. Use the [Documentation](#documentation) to write your `.coc` file.
+3. Use the [Compiling](#compiling) to compile the file.
+4. Build the generated `.c` file with the tool of your preference.
+5. Run your program.
 
 
 

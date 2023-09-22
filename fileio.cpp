@@ -18,7 +18,7 @@ namespace io {
         DATA_PATH = buffer;
 
         DATA_PATH += "\\Ult1\\Concs-lang\\";
-        cout << "Data path: " << DATA_PATH << endl;
+        // cout << "Data path: " << DATA_PATH << endl;
         
         filesystem::create_directories(DATA_PATH);
 

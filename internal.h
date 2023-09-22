@@ -7,16 +7,28 @@
 
 #define FLAG_COUNT 16
 
-enum class ErrorType : uint8_t {
-    Nevermind,
-    GeneralError,
-    GenericParser,
-    GenericCompiler,
-    UnknownFlag
-};
+extern "C" { size_t __cdecl strlen(const char *); }
+#define __co(stage) 9 -                             \
+    ((sizeof(stage) != sizeof(char*)) ?             \
+      sizeof(stage) :  strlen((const char*) stage)) // dw 'bout it
 
-void _error(ErrorType t, const char* message, int col);
+#define WARN0(stage, message, col)                          \
+    fprintf(stderr, "WARNING: [%s] %*s %s (col: %i)\n",     \
+    stage, __co(stage), "", message, col)
 
+#define WARN1(stage, message, value, col)                   \
+    fprintf(stderr, "WARNING: [%s] %*s %s %d (col: %i)\n",  \
+    stage, __co(stage), "", message, value, col)
+
+#define ERR0(stage, message, col)                           \
+    {fprintf(stderr, "ERROR:   [%s] %*s %s (col: %i)\n",    \
+    stage, __co(stage), "", message, col);                  \
+    exit(-1);}
+
+#define ERR1(stage, message, value, col)                    \
+    {fprintf(stderr, "ERROR:   [%s] %*s %s %d (col: %i)\n", \
+    stage, __co(stage), "", message, value, col);           \
+    exit(-1);}
 
 enum class Keyword : uint16_t {
     LABEL,
@@ -29,22 +41,6 @@ enum class Keyword : uint16_t {
     ARITHMETIC,
     error,
     length // to determine amount of elements here!
-};
-
-enum class CompileErrorType : uint8_t {
-    SUCCESS,
-    NEW_LINE,
-    BAD_CHAR,
-    UNEXPECTED_EOF,
-};
-class CompileError {
-public:
-    CompileErrorType type;
-    int column;
-
-    CompileError(CompileErrorType t, int i)
-    : type(t), column(i)
-    { }
 };
 
 namespace io {
@@ -64,6 +60,17 @@ namespace cp {
     */
     const wchar_t* get_label(int index);
     std::wstring compile();
+}
+
+namespace cli {
+
+    struct Data {
+        std::string 
+            file_in,
+            file_out;
+    };
+
+    Data parse(int argc, char* argv[]);
 }
 
 

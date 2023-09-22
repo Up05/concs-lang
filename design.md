@@ -21,11 +21,11 @@ concs-comp <input files> [-o <output file>] [-O <optimization level {1, 2, speed
 \<label>\                                   - set label
 ;\<index>\(==)<index>\                      - if
 ;;\<label>\                                 - go to
-- ;;;\<index>\                                - get
-;;;;\<index>\<number>\                      - set
+;;;;\<index>\<value>\                       - set
 ;;;;;\<index>\                              - print
-;;;;;;\<index>\<bool>\                      - set flag
+;;;;;;\<index>\<value>\                     - set flag
 ;;;;;;;\<index>\<index>\<operator>\<index>\ - do arithmetic
+;;;\<index>\                                - get (@DEPRECATED, NOT FULLY IMPLEMENTED)
          out     in                 in
 booleans: \;\ - true, \\ - false
 operators:

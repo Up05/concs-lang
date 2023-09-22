@@ -4,7 +4,7 @@
 
 
 using namespace std;
-namespace parser { extern vector<uint16_t> tokenized; }
+namespace parser { extern vector<uint16_t> tokenized, parcols; }
 using namespace parser;
 
 namespace cp {
@@ -53,10 +53,8 @@ namespace cp {
                     code << L"print(" GET(++ i) << ");\n";
                     break;
                 case Keyword::SET_FLAG:
-                    if(tokenized[i + 1] > FLAG_COUNT) 
-                        _error(ErrorType::UnknownFlag, 
-                            ("There are only " + to_string(FLAG_COUNT) + " flags").c_str(), -1
-                        );
+                    if(tokenized[i + 1] > FLAG_COUNT)
+                        WARN1("compiler", "Unknown flag, last flag:", FLAG_COUNT, parcols[i]);
                     code << L"flags[" << tokenized[++ i] << "] = " << tokenized[++ i] << L";\n";
                     break;
                 case Keyword::ARITHMETIC:
@@ -70,63 +68,11 @@ namespace cp {
                     code << L' ' << GET(++ i) << L");\n";
                     break;
                 default:
-                    _error(ErrorType::GenericCompiler, 
-                    ("Unkown token found: " + to_string(tokenized[i])).c_str(), -1);       
+                    // _error(ErrorType::GenericCompiler, 
+                    // ("Unkown token found: " + to_string(tokenized[i])).c_str(), parcols[i - 1]);
+                    ERR1("compiler", "Unexpected token found!", tokenized[i], parcols[i]);
             }
         }
         return code.str();
     }
 }
-
-
-
-
-/*
-God help us not bring this back!
-
-
-
-switch( (Keyword) tokenized[i] ){
-                // potential errors: dup names
-                case Keyword::LABEL:
-                    code << get_label(tokenized[++ i]);
-                    code << L":;\n";
-                    break;
-                case Keyword::IF:
-                    code << L"if(" GET(++ i) << " == " GET(++ i) << L") \n\t\t";
-                    break;
-                case Keyword::GOTO:
-                    code << L"goto " << get_label(++ i) << L";\n";
-                    break;
-                case Keyword::SET:
-                    code << L"add(&data, (Elt) {" 
-                         << tokenized[++ i] << ", " << tokenized[++ i] << L"});\n";
-                    break;
-                case Keyword::PRINT:
-                    code << L"print(" GET(++ i) << ");\n";
-                    break;
-                case Keyword::SET_FLAG:
-                    if(tokenized[i + 1] > FLAG_COUNT) 
-                        _error(ErrorType::UnknownFlag, 
-                            ("There are only " + to_string(FLAG_COUNT) + " flags").c_str(), -1
-                        );
-                    code << L"flags[" 
-                        << tokenized[++ i] << "] = " << tokenized[++ i] << L";\n";
-                    break;
-                case Keyword::ARITHMETIC:
-                    code << L"set(&data, " GET(++ i) << L' ';
-                    switch(tokenized[++ i]) { // TODO: Customizations over perf ???
-                        case 1: code << L'+'; break;
-                        case 2: code << L'-'; break;
-                        case 3: code << L'*'; break;
-                        case 4: code << L'/'; break;
-                    } 
-                    code << L' ' << GET(++ i) << ", " << tokenized[++ i] << L");\n";
-                    break;
-                default:
-                    _error(ErrorType::GenericCompiler, "Unkown token found", -1);       
-            }
-
-
-
-*/
